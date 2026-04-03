@@ -217,10 +217,18 @@ export default function Layout({ children }) {
         }`}
       >
         <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4">
-          <div className="inline-flex items-center gap-2 text-xl font-bold bg-gradient-to-r from-[#fff4bf] to-[#d79a28] bg-clip-text text-transparent">
-            <AppIcon icon="mdi:link-variant" className="text-xl" />
-            {t.brand}
-          </div>
+          <NavLink
+            to="/"
+            aria-label={t.homeAria}
+            className="inline-flex items-center gap-2 text-xl font-bold"
+          >
+            <span className="inline-grid h-9 w-9 place-items-center rounded-full bg-gradient-to-r from-[#fcd535] to-[#b77912] text-black shadow-[0_10px_30px_rgba(243,177,65,0.28)]">
+              <AppIcon icon="mdi:star-four-points-circle-outline" className="text-lg" />
+            </span>
+            <span className="bg-gradient-to-r from-[#fff4bf] to-[#d79a28] bg-clip-text text-transparent">
+              {t.brand}
+            </span>
+          </NavLink>
 
           <ul className="hidden items-center gap-5 lg:flex">
             {t.navItems.map((item) => (
