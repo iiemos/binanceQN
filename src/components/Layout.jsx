@@ -137,6 +137,7 @@ export default function Layout({ children }) {
       } else {
         window.localStorage.removeItem('wallet_address');
       }
+      window.dispatchEvent(new Event('wallet-address-changed'));
       void ensureWalletSession(address);
     };
 
@@ -157,6 +158,7 @@ export default function Layout({ children }) {
       setConnectedAddress(address);
       if (address) {
         window.localStorage.setItem('wallet_address', address);
+        window.dispatchEvent(new Event('wallet-address-changed'));
         const response = await loginByWallet(address, 'wallet-connect-signature');
         const data = response?.data || {};
         if (data.token) {
@@ -184,6 +186,7 @@ export default function Layout({ children }) {
       window.localStorage.removeItem('wallet_address');
       window.localStorage.removeItem('user_token');
       window.localStorage.removeItem('user_role');
+      window.dispatchEvent(new Event('wallet-address-changed'));
     }
     setConnectedAddress('');
     navigate('/');
@@ -325,7 +328,7 @@ export default function Layout({ children }) {
               className="inline-flex items-center gap-2 text-lg font-bold bg-gradient-to-r from-[#fff4bf] to-[#d79a28] bg-clip-text text-transparent"
             >
               <span className="inline-grid h-8 w-8 place-items-center rounded-full bg-gradient-to-r from-[#fcd535] to-[#b77912] text-black">
-                <AppIcon icon="mdi:link-variant" className="text-base" />
+                <AppIcon icon="mdi:star-four-points-circle-outline" className="text-lg" />
               </span>
               {t.brand}
             </NavLink>

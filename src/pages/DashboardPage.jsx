@@ -81,6 +81,10 @@ function formatCommissionType(type) {
 
 export default function DashboardPage() {
   const [searchParams] = useSearchParams();
+  const [walletAddress, setWalletAddress] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return window.localStorage.getItem('wallet_address') || '';
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -124,8 +128,6 @@ export default function DashboardPage() {
   const [purchaseLoading, setPurchaseLoading] = useState(false);
   const [purchaseError, setPurchaseError] = useState('');
   const [purchaseResult, setPurchaseResult] = useState(null);
-
-  const walletAddress = useMemo(() => localStorage.getItem('wallet_address') || '', []);
   const hasConnectedWallet = Boolean(walletAddress);
 
   const inviteLink = useMemo(() => {
@@ -183,8 +185,34 @@ export default function DashboardPage() {
     setAgentTeam(teamResp.data || null);
   };
 
+  const resetDashboardState = () => {
+    setUserInfo(null);
+    setMyCode(null);
+    setUpgradeOrder(null);
+    setTree(null);
+    setRewards([]);
+    setTotal(0);
+    setUidInput('');
+    setUidError('');
+    setUidMessage('');
+    setUpgradeError('');
+    setUpgradeMessage('');
+    setAgentCodeInput('');
+    setAgentCodeError('');
+    setAgentCodeMessage('');
+    setAgentEarnings(0);
+    setWithdrawAmount('');
+    setWithdrawError('');
+    setWithdrawMessage('');
+    setAgentWithdrawHistory([]);
+    setAgentTeam(null);
+  };
+
   const loadDashboardData = async () => {
-    if (!hasConnectedWallet) return;
+    if (!walletAddress) {
+      resetDashboardState();
+      return;
+    }
 
     setLoading(true);
     setError('');
@@ -226,8 +254,47 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const syncWalletAddress = () => {
+      setWalletAddress(window.localStorage.getItem('wallet_address') || '');
+    };
+
+    const handleStorage = (event) => {
+      if (!event.key || event.key === 'wallet_address') {
+        syncWalletAddress();
+      }
+    };
+
+    const handleWalletChanged = () => {
+      syncWalletAddress();
+    };
+
+    const handleAccountsChanged = (accounts) => {
+      const address = Array.isArray(accounts) ? accounts[0] || '' : '';
+      if (address) {
+        window.localStorage.setItem('wallet_address', address);
+      } else {
+        window.localStorage.removeItem('wallet_address');
+      }
+      syncWalletAddress();
+    };
+
+    syncWalletAddress();
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('wallet-address-changed', handleWalletChanged);
+    window.ethereum?.on?.('accountsChanged', handleAccountsChanged);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('wallet-address-changed', handleWalletChanged);
+      window.ethereum?.removeListener?.('accountsChanged', handleAccountsChanged);
+    };
+  }, []);
+
+  useEffect(() => {
     void loadDashboardData();
-  }, [hasConnectedWallet, commissionType, page, limit]);
+  }, [walletAddress, commissionType, page, limit]);
 
   useEffect(() => {
     const ref = searchParams.get('ref');
