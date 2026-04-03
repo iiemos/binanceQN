@@ -216,6 +216,66 @@
   animation: heroFloat 4.6s ease-in-out infinite;
 }
 
+.announcement-marquee {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
+  padding: 10px 12px;
+}
+
+.announcement-marquee__badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #fcd535, #b77912);
+  color: #111;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.announcement-marquee__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.announcement-marquee__track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 28px;
+  animation: announcementMarquee 28s linear infinite;
+}
+
+.announcement-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.announcement-marquee__dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: #f8d66d;
+  box-shadow: 0 0 12px rgba(248, 214, 109, 0.55);
+}
+
 @keyframes heroFloat {
   0%,
   100% {
@@ -223,6 +283,43 @@
   }
   50% {
     transform: translateY(-14px);
+  }
+}
+
+@keyframes announcementMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .announcement-marquee {
+    align-items: center;
+    gap: 10px;
+    border-radius: 24px;
+    padding: 10px;
+  }
+
+  .announcement-marquee__badge {
+    align-self: center;
+    padding: 8px 12px;
+  }
+
+  .announcement-marquee__track {
+    gap: 22px;
+    animation-duration: 24s;
+  }
+
+  .announcement-marquee__viewport {
+    display: flex;
+    align-items: center;
+  }
+
+  .announcement-marquee__item {
+    font-size: 13px;
   }
 }
 

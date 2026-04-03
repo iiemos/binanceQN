@@ -1,11 +1,65 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from '../components/AppIcon';
 import MarketWidget from '../components/MarketWidget';
+import { fetchHomeConfig } from '../services/api/user';
 import cardImg from '../assets/card.png';
 
 export default function HomePage() {
+  const [marqueeMessages, setMarqueeMessages] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadHomeConfig = async () => {
+      try {
+        const response = await fetchHomeConfig();
+        const messages = Array.isArray(response?.data?.marqueeMessages)
+          ? response.data.marqueeMessages.filter((item) => typeof item === 'string' && item.trim())
+          : [];
+
+        if (!cancelled) {
+          setMarqueeMessages(messages);
+        }
+      } catch {
+        if (!cancelled) {
+          setMarqueeMessages([]);
+        }
+      }
+    };
+
+    void loadHomeConfig();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const marqueeItems = marqueeMessages.length > 0 ? [...marqueeMessages, ...marqueeMessages] : [];
+
   return (
     <>
+      {marqueeMessages.length > 0 ? (
+        <section className="mb-6">
+          <div className="announcement-marquee">
+            <div className="announcement-marquee__badge">
+              <AppIcon icon="mdi:bullhorn-variant-outline" className="text-base" />
+              <span>最新播报</span>
+            </div>
+            <div className="announcement-marquee__viewport">
+              <div className="announcement-marquee__track">
+                {marqueeItems.map((message, index) => (
+                  <div key={`${message}-${index}`} className="announcement-marquee__item">
+                    <span className="announcement-marquee__dot" />
+                    <span>{message}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="relative grid min-h-[74vh] grid-cols-1 items-center gap-8 overflow-hidden pb-24 md:pb-32 lg:grid-cols-2">
         <div>
           <span className="mb-4 inline-block rounded-full border border-[#ffde99]/60 bg-white/5 px-4 py-2 text-sm text-[#f8e7b3]">
