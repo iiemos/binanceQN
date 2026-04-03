@@ -70,6 +70,7 @@
   width: 100%;
   height: 100vh;
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -105,6 +106,40 @@
   top: 42%;
   left: 52%;
   animation-duration: 34s;
+}
+
+@media (max-width: 768px) {
+  .bg-animation {
+    height: min(72vh, 620px);
+  }
+
+  .floating-orb {
+    filter: blur(60px);
+    opacity: 0.3;
+    animation: none;
+  }
+
+  .orb1 {
+    width: 300px;
+    height: 300px;
+    top: -92px;
+    left: -124px;
+  }
+
+  .orb2 {
+    width: 220px;
+    height: 220px;
+    right: -76px;
+    bottom: 32px;
+  }
+
+  .orb3 {
+    width: 180px;
+    height: 180px;
+    top: 20%;
+    left: auto;
+    right: 6%;
+  }
 }
 
 @keyframes float {

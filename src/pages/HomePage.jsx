@@ -63,7 +63,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="flex min-h-[520px] items-center justify-center rounded-2xl p-6">
+        <div className="flex min-h-[320px] items-center justify-center rounded-2xl p-4 sm:min-h-[420px] sm:p-6 lg:min-h-[520px]">
           <div className="hero-orbit-display">
             <img src={cardImg} alt="加密货币主题图" className="hero-coin-image" />
           </div>
