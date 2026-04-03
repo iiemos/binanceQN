@@ -1,0 +1,72 @@
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+.hero-orbit-display {
+  position: relative;
+  width: min(100%, 470px);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-rings-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+
+.hero-ring {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --ring-gap: 14px;
+  padding: var(--ring-gap);
+}
+
+.hero-ring-outer {
+  width: 82%;
+  height: 82%;
+}
+
+.hero-ring-middle,
+.hero-ring-inner,
+.hero-core-circle {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-core-circle {
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ring-gap);
+}
+
+.hero-coin-image {
+  height: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  animation: heroFloat 4.6s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
